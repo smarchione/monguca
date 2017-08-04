@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vue.js - Auto</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <script src="https://vuejs.org/js/vue.js"></script>
+
+    <div id="app">
+      <div class="container">
+        <div class="row" style="margin-top: 20px;">
+          <h1 class="text-primary">Auto</h1>
+          <div class="panel panel-primary">
+            <div class="panel-body">
+
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="panel panel-warning">
+                    <div class="panel-heading">
+                      <h3 class="panel-title text-uppercase">Tanque</h3>
+                    </div>
+                    <div class="panel-body" style="min-height: 90px;">
+                      <div class="progress" style="margin-top: 20px;">
+                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                        style="min-width: 2em;" :style="{'width': tanque + '%'}">
+                          {{ tanque }}%
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="panel panel-success">
+                    <div class="panel-heading">
+                      <h3 class="panel-title text-uppercase">Presupuesto</h3>
+                    </div>
+                    <div class="panel-body" style="min-height: 90px;">
+                      <h3 class="text-success">$ {{ presupuesto }}</h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="panel panel-default">
+                    <div class="panel-body">
+                      <div class="row">
+                        <div class="col-xs-6">
+                          <button class="btn btn-warning" @click="avanzar">Avanzar 1 km</button>
+                          <span style="padding: 0 5px;"></span>
+                          <span class="label label-info">{{ kmsRecorridos }} kms</span>
+                        </div>
+                        <div class="col-xs-6">
+                          <button class="btn btn-success" @click="recargar">Hacer una carga</button>
+                          <span style="padding: 0 5px;"></span>
+                          <span class="label label-danger">$ {{ gasto }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="well well-sm" style="margin-bottom: 0;">
+                    <h4>Reglas para tener en cuenta:</h4>
+                    <ul class="small">
+                      <li>Avanzar 1 km gasta 7% del tanque</li>
+                      <li>Si el tanque está al 0%, el auto no puede avanzar</li>
+                      <li>Una carga cuesta $20 del presupuesto</li>
+                      <li>Una carga equivale a llenar 10% del tanque</li>
+                      <li>Si el tanque está el 100%, no se puede hacer una carga</li>
+                      <li>Si no hay más presupuesto, no se pueden hacer más cargas</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      var auto = new Vue({
+        el: '#app',
+        data: {
+            tanque: 100,
+            presupuesto: 200,
+            kmsRecorridos: 0,
+            gasto: 0
+        },
+        methods: {
+            avanzar() {
+                if (this.tanque >= 7) {
+                    this.tanque -= 7;
+                    this.kmsRecorridos++;
+                } else {
+                    alert("El tanque esta vacio.");
+                }
+            },
+            recargar() {
+                if (this.tanque > 90) {
+                    alert("El tanque esta lleno.");
+                } else if (this.presupuesto < 20) {
+                    alert("No hay mas presupuesto.");
+                } else {
+                    this.realizarCarga();
+                }
+            },
+            realizarCarga() {
+                this.presupuesto -= 20;
+                this.gasto += 20;
+                this.tanque += 10;
+            }
+        }
+      });
+    </script>
+
+  </body>
+</html>
